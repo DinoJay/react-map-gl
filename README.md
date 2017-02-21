@@ -17,7 +17,7 @@
 ![screen](https://cloud.githubusercontent.com/assets/499192/11028165/49f41da2-86bc-11e5-85eb-9279621ef971.png)
 
 *This project is new and the API may change.*
-*forked in order to expose map bounds in onChangeViewport handler*
+## forked in order to expose map bounds in onChangeViewport handler
 
 npm install --save react-map-gl
 

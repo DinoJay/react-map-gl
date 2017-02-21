@@ -263,7 +263,7 @@ export default class MapGL extends Component {
     this._map = map;
     this._updateMapViewport({}, this.props);
     // DIFFERENCE: expose map bounds on viewport change
-    this._callOnChangeViewport(map.transform, map.getBounds());
+    this._callOnChangeViewport(map.transform, {map});
     this._updateQueryParams(mapStyle);
   }
 
@@ -472,7 +472,7 @@ export default class MapGL extends Component {
 
     if (sizeChanged) {
       this._map.resize();
-      this._callOnChangeViewport(this._map.transform);
+      this._callOnChangeViewport(this._map.transform, {map});
     }
   }
 
@@ -553,7 +553,8 @@ export default class MapGL extends Component {
       isDragging: true,
       startDragLngLat: [lng, lat],
       startBearing: transform.bearing,
-      startPitch: transform.pitch
+      startPitch: transform.pitch,
+      map
     });
   }
 
@@ -569,7 +570,7 @@ export default class MapGL extends Component {
     const transform = cloneTransform(this._map.transform);
     const [lng, lat] = this.props.startDragLngLat;
     transform.setLocationAtPoint({lng, lat}, new Point(...pos));
-    this._callOnChangeViewport(transform, {isDragging: true});
+    this._callOnChangeViewport(transform, {isDragging: true, map});
   }
 
   @autobind _onMouseRotate({pos, startPos}) {
@@ -594,7 +595,7 @@ export default class MapGL extends Component {
     transform.bearing = bearing;
     transform.pitch = pitch;
 
-    this._callOnChangeViewport(transform, {isDragging: true});
+    this._callOnChangeViewport(transform, {isDragging: true, map});
   }
 
   @autobind _onMouseMove({pos}) {
@@ -614,7 +615,8 @@ export default class MapGL extends Component {
       isDragging: false,
       startDragLngLat: null,
       startBearing: null,
-      startPitch: null
+      startPitch: null,
+      map
     });
   }
 
@@ -648,11 +650,11 @@ export default class MapGL extends Component {
     const around = unprojectFromTransform(transform, point);
     transform.zoom = transform.scaleZoom(this._map.transform.scale * scale);
     transform.setLocationAtPoint(around, point);
-    this._callOnChangeViewport(transform, {isDragging: true});
+    this._callOnChangeViewport(transform, {isDragging: true, map});
   }
 
   @autobind _onZoomEnd() {
-    this._callOnChangeViewport(this._map.transform, {isDragging: false});
+    this._callOnChangeViewport(this._map.transform, {isDragging: false, map});
   }
 
   render() {
