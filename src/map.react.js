@@ -262,7 +262,8 @@ export default class MapGL extends Component {
 
     this._map = map;
     this._updateMapViewport({}, this.props);
-    this._callOnChangeViewport(map.transform);
+    // DIFFERENCE: expose map bounds on viewport change
+    this._callOnChangeViewport(map.transform, map.getBounds());
     this._updateQueryParams(mapStyle);
   }
 
