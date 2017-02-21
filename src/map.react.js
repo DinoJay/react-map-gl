@@ -472,7 +472,7 @@ export default class MapGL extends Component {
 
     if (sizeChanged) {
       this._map.resize();
-      this._callOnChangeViewport(this._map.transform, {map});
+      this._callOnChangeViewport(this._map.transform, {map: this._map});
     }
   }
 
@@ -554,7 +554,7 @@ export default class MapGL extends Component {
       startDragLngLat: [lng, lat],
       startBearing: transform.bearing,
       startPitch: transform.pitch,
-      map
+      map: this._map
     });
   }
 
@@ -570,7 +570,7 @@ export default class MapGL extends Component {
     const transform = cloneTransform(this._map.transform);
     const [lng, lat] = this.props.startDragLngLat;
     transform.setLocationAtPoint({lng, lat}, new Point(...pos));
-    this._callOnChangeViewport(transform, {isDragging: true, map});
+    this._callOnChangeViewport(transform, {isDragging: true, map: this._map});
   }
 
   @autobind _onMouseRotate({pos, startPos}) {
@@ -595,7 +595,7 @@ export default class MapGL extends Component {
     transform.bearing = bearing;
     transform.pitch = pitch;
 
-    this._callOnChangeViewport(transform, {isDragging: true, map});
+    this._callOnChangeViewport(transform, {isDragging: true, map: this._map});
   }
 
   @autobind _onMouseMove({pos}) {
@@ -616,7 +616,7 @@ export default class MapGL extends Component {
       startDragLngLat: null,
       startBearing: null,
       startPitch: null,
-      map
+      map: this._map
     });
   }
 
@@ -650,11 +650,11 @@ export default class MapGL extends Component {
     const around = unprojectFromTransform(transform, point);
     transform.zoom = transform.scaleZoom(this._map.transform.scale * scale);
     transform.setLocationAtPoint(around, point);
-    this._callOnChangeViewport(transform, {isDragging: true, map});
+    this._callOnChangeViewport(transform, {isDragging: true, map: this._map});
   }
 
   @autobind _onZoomEnd() {
-    this._callOnChangeViewport(this._map.transform, {isDragging: false, map});
+    this._callOnChangeViewport(this._map.transform, {isDragging: false, map: this._map});
   }
 
   render() {
